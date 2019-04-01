@@ -22,7 +22,7 @@ def internal_error(error):
 @app.route('/download', methods=['POST'])
 def download(urlstr="", convert=False):
 
-    downloads_path  =   os.getenv('DOWNLOADS_PATH')
+    downloads_path  =   os.getenv('DOWNLOAD_PATH')
     
     if 'video_url' not in request.json or 'convert' not in request.json:
         abort(400)
@@ -44,4 +44,4 @@ def download(urlstr="", convert=False):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

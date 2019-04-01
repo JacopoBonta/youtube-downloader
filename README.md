@@ -5,7 +5,7 @@ The service is written in python and exposes its functionalities through a RESTf
 
 ## Usage
 ```bash
-docker run -d -v /local/path/:/app/data -p 5000:5000 m0-youtube-downloader
+docker run -d -v /local/path/:/app/data -p 3000:5000 m0-youtube-downloader
 ```
 
 ## Enpoints
