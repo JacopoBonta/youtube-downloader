@@ -2,6 +2,9 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
+from src.store import Store
+store = Store()
+
 from src.server import app
 
 import src.routes
