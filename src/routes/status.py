@@ -21,7 +21,7 @@ def status_list():
 @app.route('/status/<int:id>', methods=['GET'])
 def status_by_id(id):
 
-  if id <= 0:
+  if id < 0:
     abort(400)
 
   download_c  = store.query('SELECT * FROM downloads WHERE id = ?', (id,))
