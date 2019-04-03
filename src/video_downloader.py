@@ -1,9 +1,11 @@
 import pytube
 import threading
 import time
-from main import store
+from src.store import Store
 
 def _download_and_save_video(url, path, convert):
+
+  store = Store()
 
   download_id = store.insert_download(url, 'PENDING')  
 
