@@ -1,8 +1,9 @@
-FROM python:3.7
+FROM tiangolo/uwsgi-nginx-flask:python3.7
 WORKDIR /app
-ENV DOWNLOAD_PATH=/app/data
+ENV DOWNLOAD_PATH /app/data
+ENV SERVER_ADDRESS 0.0.0.0
+ENV SERVER_PORT 3100
 COPY . .
-RUN ./install.sh
+RUN pip3 install -r requirements.txt
 VOLUME [ "/app/data" ]
-EXPOSE 5000
-CMD ./start.sh
+EXPOSE 3100
