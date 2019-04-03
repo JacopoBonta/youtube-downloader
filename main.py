@@ -4,8 +4,8 @@ import os
 
 from src.server import app
 
-from src.routes import download
-from src.errors import internal_error, invalid_parameters, not_found
+import src.routes
+import src.errors
 
 ADDRESS = os.getenv('SERVER_ADDRESS')
 PORT    = os.getenv('SERVER_PORT')

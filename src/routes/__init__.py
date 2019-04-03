@@ -1,1 +1,2 @@
-from src.routes.download import download
+import src.routes.download
+import src.routes.status
