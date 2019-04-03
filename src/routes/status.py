@@ -9,6 +9,7 @@ def status_list():
 
   for download in downloads_c:
     statuses.append({
+      'id'        : download[0],
       'status'    : download[3],
       'video_url' : download[2]
     })
@@ -36,6 +37,6 @@ def status_by_id(id):
   }
 
   if status['status'] == 'READY':
-    status['path']  = None
+    status['time']  = download[4]
 
   return jsonify(status)
