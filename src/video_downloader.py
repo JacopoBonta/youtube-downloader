@@ -17,6 +17,8 @@ def _download_and_save_video(url, path, convert):
 
   except Exception as e:
 
+    print(e)
+
     store.set_status(download_id, 'DOWNLOAD_ERROR')
     store.log('ERROR', str(e))
 

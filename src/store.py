@@ -28,7 +28,7 @@ class Store():
       id integer PRIMARY KEY AUTOINCREMENT,
       date text NOT NULL,
       url text NOT NULL,
-      status text NOT NULL,
+      status text NOT NULL
     )''')
   
   def query(self, str, values=()):
@@ -54,7 +54,7 @@ class Store():
     
     date = datetime.datetime.now()
     
-    r = self.query('''INSERT INTO downloads (date, url, status, time) VALUES (?,?,?,?)''', (str(date), url, 'PENDING'))
+    r = self.query('''INSERT INTO downloads (date, url, status) VALUES (?,?,?)''', (str(date), url, 'PENDING'))
 
     return r.lastrowid
   
