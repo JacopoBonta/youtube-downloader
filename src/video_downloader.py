@@ -7,20 +7,26 @@ def _download_and_save_video(url, path, convert):
 
   store = Store()
 
-  download_id = store.insert_download(url, 'PENDING')  
+  download_id = store.add_download(url)
 
-  t0  =   time.time()
+  try:
 
-  yt      =   pytube.YouTube(url)
-  videos  =   yt.streams.first()
-  videos.download(path)
+    yt      =   pytube.YouTube(url)
+    videos  =   yt.streams.first()
+    videos.download(path)
 
-  t1  =   time.time()
-  
-  store.query('''UPDATE downloads
-                  SET status = ?, time = ?
-                  WHERE id = ?
-              ''', ('READY', str(t1 - t0), download_id))
+  except Exception as e:
+
+    store.set_status(download_id, 'DOWNLOAD_ERROR')
+    store.log('ERROR', str(e))
+
+  else:
+
+    store.set_status(download_id, 'READY')
+    store.log('INFO', str(url) + ' download completato')
+
+  finally:
+    return 0
 
 def download_and_save_video(url, path, convert):
   thread        = threading.Thread(target=_download_and_save_video, args=(url, path, convert))

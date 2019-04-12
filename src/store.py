@@ -1,6 +1,8 @@
 import sqlite3
 import datetime
 
+FILE_STATUSES = ['PENDING', 'READY', 'DOWNLOAD_ERROR']
+
 class Store():
   
   def __init__(self, db_file='yd.db'):
@@ -27,7 +29,6 @@ class Store():
       date text NOT NULL,
       url text NOT NULL,
       status text NOT NULL,
-      time text
     )''')
   
   def query(self, str, values=()):
@@ -41,18 +42,27 @@ class Store():
 
     return res
   
-  def insert_log(self, level, message):
+  def log(self, level, message):
     
-    timestamp = datetime.datetime.now().timestamp()
+    date = datetime.datetime.now()
     
-    r = self.query('''INSERT INTO logs (date, level, message) VALUES (?,?,?)''', (str(timestamp), level, message))
+    r = self.query('''INSERT INTO logs (date, level, message) VALUES (?,?,?)''', (str(date), level, message))
 
     return r.lastrowid
   
-  def insert_download(self, url, status, time=None):
+  def add_download(self, url):
     
-    timestamp = datetime.datetime.now().timestamp()
+    date = datetime.datetime.now()
     
-    r = self.query('''INSERT INTO downloads (date, url, status, time) VALUES (?,?,?,?)''', (str(timestamp), url, status, time))
+    r = self.query('''INSERT INTO downloads (date, url, status, time) VALUES (?,?,?,?)''', (str(date), url, 'PENDING'))
+
+    return r.lastrowid
+  
+  def set_status(self, download_id, status):
+
+    if status not in FILE_STATUSES:
+      raise Exception('Invalid status')
+    
+    r = self.query('''UPDATE downloads SET status = ? WHERE id = ?''', ('READY', download_id))
 
     return r.lastrowid
