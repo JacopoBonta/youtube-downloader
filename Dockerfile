@@ -1,4 +1,9 @@
 FROM tiangolo/uwsgi-nginx-flask:python3.7
+# set starting processes number
+ENV UWSGI_CHEAPER 1
+# set maximum processes number
+ENV UWSGI_PROCESSES 1
+RUN apt install ca-certificates -y && update-ca-certificates
 WORKDIR /app
 ENV DOWNLOAD_PATH /app/data
 ENV SERVER_ADDRESS 0.0.0.0
