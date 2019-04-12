@@ -36,7 +36,67 @@ def status_by_id(id):
     'status'    : download[3]
   }
 
-  if status['status'] == 'READY':
-    status['time']  = download[4]
-
   return jsonify(status)
+
+
+@app.route('/logs', methods=['GET'])
+def logs_list():
+  
+  logs_c  = store.query('SELECT * FROM logs')
+  logs  = []
+
+  for log in logs_c:
+    logs.append({
+      'id'        : log[0],
+      'date'      : log[1],
+      'level'     : log[2],
+      'message' : log[3]
+    })
+
+  return jsonify({
+    'count': len(logs),
+    'list': logs
+  })
+
+@app.route('/logs/<level>', methods=['GET'])
+def logs_list_by_level(level):
+
+  if not level or not isinstance(level, str):
+    abort(400)
+  
+  logs_c  = store.query('SELECT * FROM logs WHERE level = ?', (level,))
+  logs  = []
+
+  for log in logs_c:
+    logs.append({
+      'id'        : log[0],
+      'date'      : log[1],
+      'level'     : log[2],
+      'message'   : log[3]
+    })
+
+  return jsonify({
+    'count': len(logs),
+    'list': logs
+  })
+
+
+@app.route('/logs/<int:id>', methods=['GET'])
+def log_by_id(id):
+
+  if id < 0:
+    abort(400)
+
+  log_c  = store.query('SELECT * FROM logs WHERE id = ?', (id,))
+  log    = log_c.fetchone()
+
+  if not log:
+    abort(404)
+
+  log  = {
+      'date'      : log[1],
+      'level'     : log[2],
+      'message'   : log[3]
+  }
+
+  return jsonify(log)
